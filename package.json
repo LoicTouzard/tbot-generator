@@ -1,0 +1,32 @@
+{
+  "name": "tbot-generator",
+  "version": "0.0.1",
+  "description": "A simple generator for NodeJS Telegram Bots",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoicTouzard/tbot-generator.git"
+  },
+  "keywords": [
+    "generator",
+    "nodejs",
+    "telegram",
+    "bot",
+    "seed",
+    "starter",
+    "kit"
+  ],
+  "author": "Loïc Touzard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LoicTouzard/tbot-generator/issues"
+  },
+  "homepage": "https://github.com/LoicTouzard/tbot-generator#readme",
+  "dependencies": {
+    "fs-extra": "^1.0.0",
+    "prompt": "^1.0.0"
+  }
+}
