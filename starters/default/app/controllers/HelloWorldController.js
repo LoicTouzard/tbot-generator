@@ -9,10 +9,14 @@ class HelloWorldController extends TelegramBaseController {
      * @param  {Scope} $
      */
     handle($) {
-        let response = "Hello "+$.
-        $.sendMessgae("Default response")
+        let response = "Hello !"
+        $.sendMessage(response)
     }
 
+    /**
+     * getter for the route. Do the association between route names and route handlers
+     * @return {Object}
+     */
     get routes() {
         return {}
     }

@@ -9,7 +9,7 @@ class PingController extends TelegramBaseController {
      * @param  {Scope} $
      */
     handle($) { 
-        $.sendMessgae("Default response")
+        $.sendMessage("Default response")
     }
 
     /**

@@ -1,0 +1,4 @@
+{
+    "botkey": "Telegram Bot Key given by @BotFather directly in Telegram",
+    "mongoBaseURL": "The url to your MongoDB database"
+}
