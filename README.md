@@ -23,7 +23,7 @@ npm init
 
 To generate your bot use the command :  
 ```
-tbot-generator
+node tbot-generator
 ```
 
 Follow the instructions.  

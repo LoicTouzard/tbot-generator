@@ -132,6 +132,7 @@ function updatePackage(config){
 		process.exit()
 	}
 	// merge dependencies
+	if(!packagejson.dependencies) packagejson.dependencies = {}
 	Object.assign(packagejson.dependencies, newDependencies)
 	// write back the new dependencies
 	try{
