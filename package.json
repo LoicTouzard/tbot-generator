@@ -20,7 +20,7 @@
     "kit"
   ],
   "bin": {
-    "tbot-gen": "./bin/tbot-gen"
+    "tbot-gen": "./tbot-gen"
   },
   "author": "Loïc Touzard",
   "license": "ISC",
