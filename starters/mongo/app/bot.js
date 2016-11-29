@@ -26,3 +26,11 @@ db.once('open', function() {
 		.when(new RegexpCommand(/^\/clear/, 'clear'), new MessageController())	// clear all the messages in MongoDB
 	    .otherwise(new PingController()) // will call default response on PingController
 })
+
+const exitProperly = () => {
+	mongoose.disconnect()
+	process.exit()
+}
+
+process.on('SIGINT', exitProperly)
+process.on('SIGTERM', exitProperly)

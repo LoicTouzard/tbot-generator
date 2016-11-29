@@ -4,91 +4,105 @@ const fse = require('fs-extra')
 const fs = require('fs')
 const path = require('path')
 
-// Welcome !
-console.log("Welcome to the NodeJS Telegram Bot Generator !")
+function run(){ //function wrapper
 
-// do not generate if it is not initialized with npm
-try {
-    fs.accessSync(path.join(process.cwd(), "package.json"), fs.F_OK);
-} catch (err) {
-    console.error("This directory has no package.json file, please run 'npm init' first.")
-    process.exit()
-}
-try {
-    fs.accessSync(path.join(process.cwd(), "app"), fs.F_OK);
-    console.error("The directory 'app/' already exists here. Please remove it, or change directory.")
-    process.exit()
-} catch (err) {
-	// ok the folder app/ doesn't exists, we can continue
-}
+	// Welcome !
+	console.log("Welcome to the NodeJS Telegram Bot Generator !")
 
-
-const form = {
-	properties: {
-		botkey: {
-			description: 'Telegram Bot Key',
-			type: 'string',
-			message: 'You can have it from @BothFather in Telegram',
-			required: true
-		},
-		mongoBase: {
-			message: "Please enter 't', 'f', 'true' or 'false'",
-			description: 'Will you use a MongoDB database (true/false)',
-			default: false,
-			type: 'boolean',
-			required: true
-		},
-		mongoBaseURL: {
-			description: 'Database URL',
-			default: 'mongodb://localhost/myDatabase',
-			ask: () => prompt.history('mongoBase').value
-	  	}
+	// do not generate if it is not initialized with npm
+	try {
+	    fs.accessSync(path.join(process.cwd(), "package.json"), fs.F_OK);
+	} catch (err) {
+	    console.error("This directory has no package.json file, please run 'npm init' first.")
+	    process.exit()
 	}
-}
+	try {
+	    fs.accessSync(path.join(process.cwd(), "app"), fs.F_OK);
+	    console.error("The directory 'app/' already exists here. Please remove it, or change directory.")
+	    process.exit()
+	} catch (err) {
+		// ok the folder app/ doesn't exists, we can continue
+	}
 
-prompt.message = "tbot-generator"
-prompt.get(form, function (err, config) {
-    //
-    // Log the configs.
-    //
-    console.log('You will create a nodeJS Telegram Bot with the following settings :');
-    console.log('  Bot Key : ' + config.botkey);
-    console.log('  With MongoDB database : ' + config.mongoBase);
-    if(config.mongoBase) console.log('  mongoBaseURL: ' + config.mongoBaseURL);
 
-    const confirm = {
+	const form = {
 		properties: {
-			confirm: {
-				message: "Please enter 't', 'f', 'true' or 'false'",
-				description: 'Confirm the generation ? (true/false)',
-				type: 'boolean',
-				default: true,
+			botkey: {
+				description: 'Telegram Bot Key',
+				type: 'string',
+				message: 'You can have it from @BothFather in Telegram',
 				required: true
+			},
+			mongoBase: {
+				message: "Please enter 't', 'f', 'true' or 'false'",
+				description: 'Will you use a MongoDB database (true/false)',
+				default: false,
+				type: 'boolean',
+				required: true
+			},
+			mongoBaseURL: {
+				description: 'Database URL',
+				default: 'mongodb://localhost/myDatabase',
+				ask: () => prompt.history('mongoBase').value
+		  	}
+		}
+	}
+
+	prompt.message = "tbot-generator"
+	prompt.get(form, function (err, config) {
+		if(!config){
+			console.log("Exiting the generation...")
+			process.exit()
+		}
+	    //
+	    // Log the configs.
+	    //
+	    console.log('You will create a nodeJS Telegram Bot with the following settings :');
+	    console.log('  Bot Key : ' + config.botkey);
+	    console.log('  With MongoDB database : ' + config.mongoBase);
+	    if(config.mongoBase) console.log('  mongoBaseURL: ' + config.mongoBaseURL);
+
+	    const confirm = {
+			properties: {
+				confirm: {
+					message: "Please enter 't', 'f', 'true' or 'false'",
+					description: 'Confirm the generation ? (true/false)',
+					type: 'boolean',
+					default: true,
+					required: true
+				}
 			}
 		}
-	}
 
-	prompt.get(confirm, function (err, result) {
-		if(result.confirm){
-			console.log("Starting the generation...")
+		prompt.get(confirm, function (err, result) {
+			if(!result){
+				console.log("Exiting the generation...")
+				process.exit()
+			}
+			if(result.confirm){
+				console.log("Starting the generation...")
 
-			/* GENERATION */
-			
-			copyDefaultDirectory(config)
-			if(config.mongoBase) copyMongoDirectory(config)
-			updatePackage(config)
-			createConfig(config)
+				/* GENERATION */
+				
+				copyDefaultDirectory(config)
+				if(config.mongoBase) copyMongoDirectory(config)
+				createConfig(config)
+				updatePackage(config)
+				updateIgnore(config)
 
-			console.log("Generation terminated !")
-			console.log("Now you can run 'npm install' and start the bot with 'node app/bot.js'.")
-			console.log("Have fun programming !")
 
-		}
-		else{
-			console.log("Exiting the generation...")
-		}
+				console.log("Generation terminated successfully!")
+				console.log("You can now run 'npm install' and start the bot with 'node app/bot.js'.")
+				console.log("Have fun programming !")
+
+			}
+			else{
+				console.log("Exiting the generation...")
+				process.exit()
+			}
+		})
 	})
-})
+}
 
 
 function copyDefaultDirectory(config){
@@ -164,3 +178,29 @@ function createConfig(config){
 		process.exit()
 	}
 }
+
+
+function updateIgnore(config){
+	const gitignore = path.join(process.cwd(),'.gitignore')
+	try{
+		fse.ensureFileSync(gitignore)
+	}
+	catch(err){
+		console.error("X Error when opening the .gitignore file.")
+		console.error(err)
+		process.exit()
+	}
+
+	const ignoreText = "app/config.json\n"
+	try{
+		fs.appendFileSync(gitignore, ignoreText)
+	}
+	catch(err){
+		console.error("X Error when writing into the .gitignore file.")
+		console.error(err)
+		process.exit()
+	}
+}
+
+
+exports.run = run

@@ -9,7 +9,7 @@ class HelloWorldController extends TelegramBaseController {
      * @param  {Scope} $
      */
     handle($) {
-        let response = "Hello !"
+        let response = "Hello World !"
         $.sendMessage(response)
     }
 
