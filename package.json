@@ -1,6 +1,6 @@
 {
   "name": "tbot-generator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple generator for NodeJS Telegram Bots",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "fs-extra": "^1.0.0",
     "prompt": "^1.0.0"
   },
-  "engines" : {
-    "node" : ">=6.3.1"
+  "engines": {
+    "node": ">=6.3.1"
   }
 }
